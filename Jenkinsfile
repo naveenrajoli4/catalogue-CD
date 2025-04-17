@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'agent-2-label'
+        label 'agent-1-label'
     }
     options{
         timeout(time: 30, unit: 'MINUTES')
@@ -62,7 +62,7 @@ pipeline {
             steps{
                 withAWS(region: 'us-east-1', credentials: "aws-creds-${environment}") {
                     sh """
-                        aws eks update-kubeconfig --region ${region} --name ${project}-dev
+                        aws eks update-kubeconfig --region ${region} --name kdp-${project}-${environment}
                         cd helm
                         sed -i 's/IMAGE_VERSION/${appVersion}/g' values-${environment}.yaml
                         helm upgrade --install ${component} -n ${project} -f values-${environment}.yaml .
